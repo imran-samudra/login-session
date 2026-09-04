@@ -2,7 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
-const serviceAccount = require('./loginpage-618aa-firebase-adminsdk-fbsvc-ac9d770899.json');
+const serviceAccount = JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT
+);
 
 // Inisialisasi Firebase Admin
 initializeApp({
