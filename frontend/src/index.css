@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+
+* { box-sizing: border-box; }
+html { background: #f1f4f8; }
+body { margin: 0; min-width: 320px; font-family: 'DM Sans', sans-serif; color: #172036; -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
