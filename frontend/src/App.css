@@ -10,19 +10,30 @@
 .welcome-panel::before, .welcome-panel::after { content: ''; position: absolute; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; }
 .welcome-panel::before { width: 440px; height: 440px; right: -270px; top: -160px; }
 .welcome-panel::after { width: 310px; height: 310px; left: -190px; bottom: -130px; }
-.brand, .mobile-brand { display: flex; align-items: center; gap: 11px; font: 800 20px 'Manrope', sans-serif; position: relative; z-index: 1; }
-.brand-mark { width: 38px; height: 38px; display: grid; place-items: center; color: #5651da; background: #fff; border-radius: 12px; font: 800 19px 'Manrope'; box-shadow: 0 7px 20px rgba(22,20,91,.18); }
+.brand-logo { display: inline-flex; align-items: center; gap: 11px; position: relative; z-index: 1; color: #172036; }
+.brand-symbol { width: 42px; height: 42px; overflow: visible; filter: drop-shadow(0 7px 10px rgba(41,37,142,.18)); }
+.brand-symbol-bg { fill: var(--primary); }
+.brand-symbol-awning { fill: #fff; }
+.brand-symbol-chart, .brand-symbol-arrow { fill: none; stroke: #fff; stroke-width: 2.7; stroke-linecap: round; stroke-linejoin: round; }
+.brand-word { font: 800 22px 'Manrope', sans-serif; letter-spacing: -.035em; }
+.brand-word span { color: #5a55e7; }
+.brand-logo-light { color: #fff; }
+.brand-logo-light .brand-symbol-bg { fill: #fff; }
+.brand-logo-light .brand-symbol-awning { fill: #5a55e7; }
+.brand-logo-light .brand-symbol-chart, .brand-logo-light .brand-symbol-arrow { stroke: #5a55e7; }
+.brand-logo-light .brand-word span { color: #c9c7ff; }
+.brand-logo-compact .brand-symbol { width: 46px; height: 46px; }
 .welcome-copy { position: relative; z-index: 1; max-width: 390px; }
 .eyebrow { display: block; margin-bottom: 13px; color: #6b67dd; font-size: 12px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
 .welcome-panel .eyebrow { color: #cbc9ff; }
 .welcome-copy h1 { margin: 0 0 20px; font: 800 clamp(35px, 4vw, 50px)/1.11 'Manrope'; letter-spacing: -.045em; }
 .welcome-copy p { margin: 0; color: #dcdbff; font-size: 16px; line-height: 1.7; }
-.feature-row { display: flex; gap: 21px; margin-top: 28px; color: #fff; font-size: 13px; font-weight: 600; }
+.feature-row { display: flex; gap: 9px; margin-top: 28px; color: #fff; font-size: 12px; font-weight: 600; }
+.feature-row span { padding: 7px 11px; border: 1px solid rgba(255,255,255,.2); border-radius: 99px; background: rgba(255,255,255,.08); }
 .panel-quote { position: relative; z-index: 1; margin: 0; color: #bdbbf4; font-size: 13px; }
 .content-panel { display: grid; place-items: center; padding: 48px clamp(35px, 6vw, 74px); }
 .auth-card { width: 100%; max-width: 470px; }
 .mobile-brand { display: none; color: var(--ink); margin-bottom: 40px; }
-.mobile-brand .brand-mark { color: #fff; background: var(--primary); }
 .auth-header { margin-bottom: 28px; }
 .auth-header h2 { margin: 0 0 9px; color: var(--ink); font: 800 34px/1.2 'Manrope'; letter-spacing: -.035em; }
 .auth-header p { margin: 0; color: var(--muted); font-size: 15px; }
@@ -55,7 +66,6 @@
 .spinner, .button-spinner { border-radius: 50%; animation: spin .8s linear infinite; }
 .button-spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; }
 .loading-screen { align-content: center; gap: 15px; color: var(--muted); }
-.loading-screen .brand-mark { color: #fff; background: var(--primary); }
 .loading-screen .spinner { width: 28px; height: 28px; border: 3px solid #deddf7; border-top-color: var(--primary); }
 .loading-screen p { margin: 0; font-size: 14px; }
 .dashboard-layout { display: block; min-height: auto; max-width: 760px; }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import BrandLogo from './BrandLogo';
 import './Dashboard.css';
 
 const Dashboard = ({ user, onLogout, isLoading }) => {
@@ -16,15 +17,28 @@ const Dashboard = ({ user, onLogout, isLoading }) => {
         setBackendMessage(data.message || 'Sesi berhasil diverifikasi.');
       } catch (error) {
         if (error.name !== 'AbortError') setBackendMessage('Akun berhasil masuk. Backend belum dapat dihubungi.');
-      } finally { if (!controller.signal.aborted) setLoading(false); }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
     };
-    load(); return () => controller.abort();
+    load();
+    return () => controller.abort();
   }, [user]);
 
   const initial = (user.displayName || user.email || 'U').charAt(0).toUpperCase();
   return <div className="dashboard">
-    <header className="dashboard-nav"><div className="brand dashboard-brand"></div><button className="logout-button" onClick={onLogout} disabled={isLoading}><span>↗</span>{isLoading ? 'Keluar...' : 'Keluar'}</button></header>
-    <div className="dashboard-body"><span className="success-badge">✓ Login berhasil</span><div className="profile-avatar">{user.photoURL ? <img src={user.photoURL} alt="Foto profil"/> : initial}</div><p className="welcome-label">Selamat datang,</p><h1>{user.displayName }</h1><p className="user-email">{user.email}</p><div className="session-card"><span className={`status-dot ${loading ? 'pulse' : ''}`}/><div><strong>{loading ? 'Loading...' : 'Berhasil Login'}</strong></div></div></div>
+    <header className="dashboard-nav">
+      <BrandLogo/>
+      <button className="logout-button" onClick={onLogout} disabled={isLoading}><span aria-hidden="true">↗</span>{isLoading ? 'Keluar...' : 'Keluar'}</button>
+    </header>
+    <div className="dashboard-body">
+      <span className="success-badge">✓ Login berhasil</span>
+      <div className="profile-avatar">{user.photoURL ? <img src={user.photoURL} alt="Foto profil"/> : initial}</div>
+      <p className="welcome-label">Selamat datang di Ritelio,</p>
+      <h1>{user.displayName || 'Pengguna'}</h1>
+      <p className="user-email">{user.email}</p>
+      <div className="session-card"><span className={`status-dot ${loading ? 'pulse' : ''}`}/><div><strong>{loading ? 'Memeriksa sesi...' : 'Sesi aktif'}</strong><p>{loading ? 'Mohon tunggu sebentar.' : backendMessage}</p></div></div>
+    </div>
   </div>;
 };
 export default Dashboard;
