@@ -12,11 +12,11 @@ const Dashboard = ({ user, onLogout, isLoading }) => {
       try {
         const token = await user.getIdToken();
         const response = await fetch('/api/dashboard', { headers: { Authorization: `Bearer ${token}` }, signal: controller.signal });
-        if (!response.ok) throw new Error('Request gagal');
         const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Request backend gagal.');
         setBackendMessage(data.message || 'Sesi berhasil diverifikasi.');
       } catch (error) {
-        if (error.name !== 'AbortError') setBackendMessage('Akun berhasil masuk. Backend belum dapat dihubungi.');
+        if (error.name !== 'AbortError') setBackendMessage(error.message || 'Backend belum dapat dihubungi.');
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }
