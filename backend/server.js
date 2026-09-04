@@ -8,16 +8,20 @@ let firebaseAuth;
 const getFirebaseAuth = () => {
   if (firebaseAuth) return firebaseAuth;
 
-  const rawCredentials = process.env.FIREBASE_SERVICE_ACCOUNT;
+  const encodedCredentials = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
+  const rawCredentials = encodedCredentials
+    ? Buffer.from(encodedCredentials, 'base64').toString('utf8')
+    : process.env.FIREBASE_SERVICE_ACCOUNT;
+
   if (!rawCredentials) {
-    throw new Error('FIREBASE_SERVICE_ACCOUNT belum dikonfigurasi.');
+    throw new Error('Kredensial Firebase Admin belum dikonfigurasi.');
   }
 
   let serviceAccount;
   try {
     serviceAccount = JSON.parse(rawCredentials);
   } catch (error) {
-    throw new Error('FIREBASE_SERVICE_ACCOUNT bukan JSON yang valid.');
+    throw new Error('Kredensial Firebase Admin bukan JSON yang valid.');
   }
 
   const firebaseApp = initializeApp({ credential: cert(serviceAccount) });
