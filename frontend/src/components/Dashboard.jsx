@@ -36,8 +36,8 @@ const Dashboard = ({ user, onLogout, isLoading }) => {
       <div className="profile-avatar">{user.photoURL ? <img src={user.photoURL} alt="Foto profil"/> : initial}</div>
       <p className="welcome-label">Selamat datang di Ritelio,</p>
       <h1>{user.displayName || 'Pengguna'}</h1>
-      <p className="user-email">{user.email}</p>
-      <div className="session-card"><span className={`status-dot ${loading ? 'pulse' : ''}`}/><div><strong>{loading ? 'Memeriksa sesi...' : 'Sesi aktif'}</strong><p>{loading ? 'Mohon tunggu sebentar.' : backendMessage}</p></div></div>
+      <p></p>
+      <div className="session-card"><span className={`status-dot ${loading ? 'pulse' : ''}`}/><div><strong><p className="user-email">{user.email}</p></strong></div></div>
     </div>
   </div>;
 };
