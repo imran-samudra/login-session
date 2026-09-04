@@ -2,9 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
-const serviceAccount = JSON.parse(
-  process.env.FIREBASE_SERVICE_ACCOUNT
-);
+if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+  throw new Error('FIREBASE_SERVICE_ACCOUNT belum dikonfigurasi.');
+}
+
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 // Inisialisasi Firebase Admin
 initializeApp({
@@ -41,7 +43,11 @@ app.get('/api/dashboard', verifyToken, (req, res) => {
   });
 });
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Backend aktif di http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Backend aktif di http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
