@@ -2,18 +2,28 @@ const express = require('express');
 const cors = require('cors');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
-if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
-  throw new Error('FIREBASE_SERVICE_ACCOUNT belum dikonfigurasi.');
-}
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+let firebaseAuth;
 
-// Inisialisasi Firebase Admin
-initializeApp({
-  credential: cert(serviceAccount)
-});
+const getFirebaseAuth = () => {
+  if (firebaseAuth) return firebaseAuth;
 
-const auth = getAuth();
+  const rawCredentials = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (!rawCredentials) {
+    throw new Error('FIREBASE_SERVICE_ACCOUNT belum dikonfigurasi.');
+  }
+
+  let serviceAccount;
+  try {
+    serviceAccount = JSON.parse(rawCredentials);
+  } catch (error) {
+    throw new Error('FIREBASE_SERVICE_ACCOUNT bukan JSON yang valid.');
+  }
+
+  const firebaseApp = initializeApp({ credential: cert(serviceAccount) });
+  firebaseAuth = getAuth(firebaseApp);
+  return firebaseAuth;
+};
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -26,6 +36,14 @@ const verifyToken = async (req, res, next) => {
   }
 
   const token = authHeader.split(' ')[1];
+  let auth;
+  try {
+    auth = getFirebaseAuth();
+  } catch (error) {
+    console.error('Firebase Admin gagal dikonfigurasi:', error.message);
+    return res.status(503).json({ message: 'Konfigurasi Firebase Admin belum valid.' });
+  }
+
   try {
     const decodedToken = await auth.verifyIdToken(token);
     req.user = decodedToken;
