@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { initializeApp, cert } = require('firebase-admin/app');
+const { initializeApp, cert, getApp, getApps } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
 
 let firebaseAuth;
@@ -24,7 +24,9 @@ const getFirebaseAuth = () => {
     throw new Error('Kredensial Firebase Admin bukan JSON yang valid.');
   }
 
-  const firebaseApp = initializeApp({ credential: cert(serviceAccount) });
+  const firebaseApp = getApps().length
+    ? getApp()
+    : initializeApp({ credential: cert(serviceAccount) });
   firebaseAuth = getAuth(firebaseApp);
   return firebaseAuth;
 };
