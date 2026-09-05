@@ -37,7 +37,7 @@ const Dashboard = ({ user, onLogout, isLoading }) => {
       <p className="welcome-label">Selamat datang di Ritelio,</p>
       <h1>{user.displayName || 'Pengguna'}</h1>
       <p></p>
-      <div className="session-card"><span className={`status-dot ${loading ? 'pulse' : ''}`}/><div><strong>{loading ? 'Memeriksa sesi...' : 'Sesi aktif'}</strong><p className="user-email">{user.email}</p></div></div>
+      <div className="session-card"><span className={`status-dot ${loading ? 'pulse' : ''}`}/><div><strong>{loading ? 'Memeriksa sesi...' : 'Sesi aktif'}</strong><p className="user-email">{user.email}</p>{!loading && <p>{backendMessage}</p>}</div></div>
     </div>
   </div>;
 };
