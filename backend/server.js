@@ -5,6 +5,21 @@ const firebaseAdminAuth = require('firebase-admin/auth');
 
 let firebaseAuth;
 
+const resolveGetAuth = () => {
+  const getAuthFunction =
+    firebaseAdminAuth?.getAuth ||
+    firebaseAdminAuth?.default?.getAuth ||
+    (typeof firebaseAdminAuth?.default === 'function' ? firebaseAdminAuth.default : null) ||
+    (typeof firebaseAdminAuth === 'function' ? firebaseAdminAuth : null);
+
+  if (typeof getAuthFunction !== 'function') {
+    const availableExports = Object.keys(firebaseAdminAuth || {}).join(', ') || 'tidak ada';
+    throw new Error(`Firebase Auth API tidak tersedia. Export: ${availableExports}`);
+  }
+
+  return getAuthFunction;
+};
+
 const getFirebaseAuth = () => {
   if (firebaseAuth) return firebaseAuth;
 
@@ -27,7 +42,7 @@ const getFirebaseAuth = () => {
   const firebaseApp = getApps().length
     ? getApp()
     : initializeApp({ credential: cert(serviceAccount) });
-  firebaseAuth = firebaseAdminAuth.getAuth(firebaseApp);
+  firebaseAuth = resolveGetAuth()(firebaseApp);
   return firebaseAuth;
 };
 const app = express();
