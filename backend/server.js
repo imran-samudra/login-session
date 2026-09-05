@@ -1,26 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const { initializeApp, cert, getApp, getApps } = require('firebase-admin/app');
-const firebaseAdminAuth = require('firebase-admin/auth');
 
 let firebaseAuth;
 
-const resolveGetAuth = () => {
-  const getAuthFunction =
-    firebaseAdminAuth?.getAuth ||
-    firebaseAdminAuth?.default?.getAuth ||
-    (typeof firebaseAdminAuth?.default === 'function' ? firebaseAdminAuth.default : null) ||
-    (typeof firebaseAdminAuth === 'function' ? firebaseAdminAuth : null);
-
-  if (typeof getAuthFunction !== 'function') {
-    const availableExports = Object.keys(firebaseAdminAuth || {}).join(', ') || 'tidak ada';
-    throw new Error(`Firebase Auth API tidak tersedia. Export: ${availableExports}`);
-  }
-
-  return getAuthFunction;
-};
-
-const getFirebaseAuth = () => {
+const getFirebaseAuth = async () => {
   if (firebaseAuth) return firebaseAuth;
 
   const encodedCredentials = process.env.FIREBASE_SERVICE_ACCOUNT_BASE64;
@@ -42,7 +26,8 @@ const getFirebaseAuth = () => {
   const firebaseApp = getApps().length
     ? getApp()
     : initializeApp({ credential: cert(serviceAccount) });
-  firebaseAuth = resolveGetAuth()(firebaseApp);
+  const { getAuth } = await import('firebase-admin/auth');
+  firebaseAuth = getAuth(firebaseApp);
   return firebaseAuth;
 };
 const app = express();
@@ -59,7 +44,7 @@ const verifyToken = async (req, res, next) => {
   const token = authHeader.split(' ')[1];
   let auth;
   try {
-    auth = getFirebaseAuth();
+    auth = await getFirebaseAuth();
   } catch (error) {
     console.error('Firebase Admin gagal dikonfigurasi:', error.message);
     return res.status(503).json({ message: 'Konfigurasi Firebase Admin belum valid.' });
