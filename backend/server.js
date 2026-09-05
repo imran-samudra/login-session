@@ -63,7 +63,7 @@ const verifyToken = async (req, res, next) => {
 // Endpoint uji coba privat
 app.get('/api/dashboard', verifyToken, (req, res) => {
   res.json({
-    message: 'Halo! Token kamu valid diverifikasi oleh Node.js.',
+    message: 'Halo!',
     user: req.user
   });
 });
