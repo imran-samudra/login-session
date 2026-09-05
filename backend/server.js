@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { initializeApp, cert, getApp, getApps } = require('firebase-admin/app');
-const { getAuth } = require('firebase-admin/auth');
+const firebaseAdminAuth = require('firebase-admin/auth');
 
 let firebaseAuth;
 
@@ -27,7 +27,7 @@ const getFirebaseAuth = () => {
   const firebaseApp = getApps().length
     ? getApp()
     : initializeApp({ credential: cert(serviceAccount) });
-  firebaseAuth = getAuth(firebaseApp);
+  firebaseAuth = firebaseAdminAuth.getAuth(firebaseApp);
   return firebaseAuth;
 };
 const app = express();
